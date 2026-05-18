@@ -2,6 +2,11 @@
 
 A full-stack MERN Lead Management Dashboard built with TypeScript, Express, MongoDB, React, and TailwindCSS.
 
+## Live Demo
+
+- **Frontend (Vercel):** [https://smart-leads-dashboard-client-lilac.vercel.app](https://smart-leads-dashboard-client-lilac.vercel.app)
+- **Backend API (Render):** [https://name-smart-leads-dashboard-api-n4k2.onrender.com/health](https://name-smart-leads-dashboard-api-n4k2.onrender.com/health)
+
 ## Features
 
 - JWT authentication with registration, login, protected routes, and bcrypt password hashing
