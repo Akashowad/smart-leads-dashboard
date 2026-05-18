@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+import { Plus, Users, UserCheck, MessageSquare, Sparkles } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { leadsApi } from "../api/leads";
 import { AppShell } from "../components/layout/AppShell";
@@ -51,11 +51,13 @@ export const DashboardPage = () => {
   const stats = useMemo(() => {
     const qualified = leads.filter((lead) => lead.status === "Qualified").length;
     const contacted = leads.filter((lead) => lead.status === "Contacted").length;
-    return [
-      { label: "Visible leads", value: meta.total },
-      { label: "Qualified on page", value: qualified },
-      { label: "Contacted on page", value: contacted }
-    ];
+    const newLeads = leads.filter((lead) => lead.status === "New").length;
+    return {
+      total: meta.total,
+      qualified,
+      contacted,
+      newLeads
+    };
   }, [leads, meta.total]);
 
   const handleSave = async (payload: LeadPayload) => {
@@ -101,12 +103,63 @@ export const DashboardPage = () => {
     <AppShell>
       <div className="grid gap-6">
         <section className="grid gap-4 sm:grid-cols-3">
-          {stats.map((stat) => (
-            <div key={stat.label} className="rounded-md border border-slate-200 bg-white p-4 shadow-panel dark:border-slate-800 dark:bg-slate-900">
-              <p className="text-sm text-slate-500 dark:text-slate-400">{stat.label}</p>
-              <p className="mt-2 text-3xl font-semibold">{stat.value}</p>
+          <div className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white/70 p-5 shadow-panel backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-violet-500/30 hover:shadow-lg dark:border-slate-800/40 dark:bg-[#0d1527]/70">
+            <div className="absolute -right-3 -top-3 h-16 w-16 rounded-full bg-violet-500/10 blur-xl transition-all group-hover:bg-violet-500/20" />
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Leads</p>
+                <p className="mt-2 text-3xl font-bold tracking-tight">{stats.total}</p>
+              </div>
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-100 text-violet-600 transition-transform group-hover:scale-110 dark:bg-violet-950/50 dark:text-violet-400">
+                <Users size={22} />
+              </div>
             </div>
-          ))}
+            <div className="mt-4 flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+              <span className="font-semibold text-violet-600 dark:text-violet-400">Pipeline active</span> in workspace
+            </div>
+          </div>
+
+          <div className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white/70 p-5 shadow-panel backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/30 hover:shadow-lg dark:border-slate-800/40 dark:bg-[#0d1527]/70">
+            <div className="absolute -right-3 -top-3 h-16 w-16 rounded-full bg-amber-500/10 blur-xl transition-all group-hover:bg-amber-500/20" />
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">Contacted (On Page)</p>
+                <p className="mt-2 text-3xl font-bold tracking-tight">{stats.contacted}</p>
+              </div>
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-100 text-amber-600 transition-transform group-hover:scale-110 dark:bg-amber-950/50 dark:text-amber-400">
+                <MessageSquare size={22} />
+              </div>
+            </div>
+            <div className="mt-4 flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+              <div className="h-1.5 w-full rounded-full bg-slate-100 dark:bg-slate-800">
+                <div 
+                  className="h-1.5 rounded-full bg-amber-500 transition-all duration-500" 
+                  style={{ width: `${stats.total > 0 ? (stats.contacted / Math.min(stats.total, 10)) * 100 : 0}%` }}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white/70 p-5 shadow-panel backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-emerald-500/30 hover:shadow-lg dark:border-slate-800/40 dark:bg-[#0d1527]/70">
+            <div className="absolute -right-3 -top-3 h-16 w-16 rounded-full bg-emerald-500/10 blur-xl transition-all group-hover:bg-emerald-500/20" />
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">Qualified (On Page)</p>
+                <p className="mt-2 text-3xl font-bold tracking-tight">{stats.qualified}</p>
+              </div>
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600 transition-transform group-hover:scale-110 dark:bg-emerald-950/50 dark:text-emerald-400">
+                <UserCheck size={22} />
+              </div>
+            </div>
+            <div className="mt-4 flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+              <div className="h-1.5 w-full rounded-full bg-slate-100 dark:bg-slate-800">
+                <div 
+                  className="h-1.5 rounded-full bg-emerald-500 transition-all duration-500" 
+                  style={{ width: `${stats.total > 0 ? (stats.qualified / Math.min(stats.total, 10)) * 100 : 0}%` }}
+                />
+              </div>
+            </div>
+          </div>
         </section>
 
         <div className="flex flex-wrap items-center justify-between gap-3">

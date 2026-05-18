@@ -7,16 +7,17 @@ export default {
     extend: {
       colors: {
         brand: {
-          50: "#eef8ff",
-          100: "#d9efff",
-          500: "#0f91d2",
-          600: "#0877b3",
-          700: "#075f91"
+          50: "#f5f3ff",
+          100: "#ede9fe",
+          200: "#ddd6fe",
+          500: "#8b5cf6",
+          600: "#7c3aed",
+          700: "#6d28d9"
         },
-        ink: "#172033"
+        ink: "#0f172a"
       },
       boxShadow: {
-        panel: "0 16px 40px rgba(23, 32, 51, 0.08)"
+        panel: "0 20px 40px -15px rgba(124, 58, 237, 0.08)"
       }
     }
   },
